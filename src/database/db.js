@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 
@@ -10,10 +11,11 @@ const mongooseConection = async () => {
             useNewUrlParser : true,
             useUnifiedTopology : true,
         })
-        console.log("MONGONNECTED TO " + process.env.Mongo_DB_URL)
+        const url = `${db.connection.host}:${db.connection.port}`
+             console.log(`mongo DB conectado en . : ${url}`)
         
     } catch (error) {
-        console.log(error)
+        console.log("error",error)
         process.exit(1)
     }
 }
