@@ -20,7 +20,7 @@ const mercadoPagoLink = async (products) => {
                 }
             }),
     
-            notification_url : 'https://6f67-2800-810-513-8238-25-ac04-f5dc-744c.sa.ngrok.io/notification'
+            notification_url :'http://localhost:3000/notification'
           };
           
          const response = await mercadoPago.preferences.create(preference)

@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { emailPayment } = require('../helper/confirmEmail')
 const mercadoPagoLink = require('../helper/mercadoPago')
 const OrderModel = require('../models/OrderModel')
 const Product = require('../models/Product')
@@ -11,7 +12,7 @@ const postOrder = async (req, res) => {
     
     const data = req.body
      const id = req.params.id
-     console.log(data[0])
+     console.log(data[2])
    
     
       order = new OrderModel({ user : id , orderItems : data[0].map(el => {
@@ -23,7 +24,9 @@ const postOrder = async (req, res) => {
             product: el._id
         }
      }),  
-     address: data[1]
+     address: data[1],
+     userPaymentInfo : data[2]
+     
     
     })
      
@@ -31,7 +34,8 @@ const postOrder = async (req, res) => {
      
     
      const link = await mercadoPagoLink(data[0])
-      
+       
+     emailPayment(link, data[1], data[2].email)
      
      res.json(link)
    } catch (error) {

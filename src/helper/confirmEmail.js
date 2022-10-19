@@ -59,4 +59,23 @@ const forgotPasswordSendEmail = async(datos) => {
         await sgMail.send(msg);
 
 } 
-module.exports = {emailRegister, forgotPasswordSendEmail}
+
+const emailPayment = async (link,local, email) => {
+        sgMail.setApiKey(process.env.SENDGRID_APY_KEY);
+        const msg = {
+            to: email,
+           from: 'tomikapo1160@gmail.com',
+            subject: 'Tu orden',
+            text: 'Tu compra',
+            html: `<p>Hola, aqui esta tu orden.</p>
+            <p>elegiste el local ${local}.</p>
+                    <a href="${link}">proceder a comprar</a> </p>
+                    <p> Si tu ya hiciste la compra , puedes obviar este email</p>`
+            };
+    
+            await sgMail.send(msg);
+}
+
+
+
+module.exports = {emailRegister, forgotPasswordSendEmail, emailPayment}

@@ -72,7 +72,18 @@ const orderSchema = mongoose.Schema({
     address : {
         type : String,
         required : true
+    },
+
+    userPaymentInfo : {
+        name: {type: String},
+        lastName: {type: String},
+        phone: {type: Number},
+        address_user: {type: String},
+        info: {type: String},
+        email:{type: String}
+
     }
+
     
 })
 const OrderModel = mongoose.model('OrderModel', orderSchema )
