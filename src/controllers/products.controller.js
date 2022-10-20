@@ -81,6 +81,7 @@ const getProduct = async (req, res) => {
           return res.status(200).json(productQuery);
         }
         if (rating === "dsc") {
+          console.log("hola")
           const productQuery = await Product.find()
             .limit(limit * 1)
             .skip((page - 1) * limit)
@@ -147,10 +148,64 @@ const getProductId = async (req, res) => {
   }
 };
 
+const sortProductsDescending = async (req, res) => {
+  try {
+    
+    const sortProduct = await Product.find().sort({'price': 1})
+
+    res.status(200).json(sortProduct)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const sortProductsAscending = async(req, res) => {
+  try {
+    
+    const productAscending = await Product.find().sort({'price' : -1})
+    res.status(200).json(productAscending)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const productBrand= async(req,res) => {
+  const {brand} = req.query
+  try {
+   if(brand) {
+    const brandProduct = await Product.find({
+      name: { $regex: brand, $options: "i" },
+    })
+
+    res.status(200).json(brandProduct)
+   }
+   res.status(400).json({error : true , msg : 'error query'})
+ 
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const productPrice = async (req, res) => {
+  const {min , max} = req.query
+  try {
+    const resultProduct = await Product.find({
+      price : { $gte: min , $lte: max}
+    })
+
+    res.status(200).json(resultProduct)
+  } catch (error) {
+    console.log(error)
+  }
+}
 module.exports = {
   postProduct,
   getProduct,
   updateProduct,
   deleteProduct,
   getProductId,
+  sortProductsDescending,
+  sortProductsAscending,
+  productBrand,
+  productPrice
 };

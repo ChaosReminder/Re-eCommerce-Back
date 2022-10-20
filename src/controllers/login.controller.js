@@ -6,6 +6,7 @@ const {
   emailRegister,
   forgotPasswordSendEmail,
 } = require("../helper/confirmEmail");
+const Google = require("../models/Google");
 //REGISTRAR USUARIO
 const registerPost = async (req, res) => {
   const { username, email, password } = req.body;
@@ -57,7 +58,9 @@ const confirmUser = async (req, res) => {
 
 //AUTENTICAR USUARIO
 const authenticate = async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
+  const user =
+    (await Google.findOne({ username: req.body.username })) ||
+    (await User.findOne({ username: req.body.username }));
   if (!user) return res.status(401).send({ msg: "¡Usuario no existe!" });
   if (user.confirmed === false) {
     return res.status(401).send({ msg: "¡Usuario no confirmado!" });

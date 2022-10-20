@@ -1,14 +1,12 @@
 const mongoose = require("mongoose");
-const generateId = require("../helper/generateId");
 
-const UserSchema = mongoose.Schema({
+const GoogleSchema = mongoose.Schema({
   image: {
     type: String,
   },
   username: {
     type: String,
     required: true,
-    Unique: true,
   },
   email: {
     type: String,
@@ -17,7 +15,6 @@ const UserSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   admin: {
     type: Boolean,
@@ -26,7 +23,6 @@ const UserSchema = mongoose.Schema({
   },
   token: {
     type: String,
-    default: generateId(),
   },
 
   confirmed: {
@@ -35,6 +31,6 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-const User = mongoose.model("User", UserSchema);
+const Google = mongoose.model("Google", GoogleSchema);
 
-module.exports = User;
+module.exports = Google;

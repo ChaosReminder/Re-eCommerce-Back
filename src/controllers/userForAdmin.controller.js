@@ -1,7 +1,9 @@
+const Google = require("../models/Google");
 const User = require("../models/User");
 
 const createNewUser = async (req, res) => {
   const newUser = new User({
+    image: req.body.image,
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
@@ -16,13 +18,21 @@ const createNewUser = async (req, res) => {
 
 const modifyUser = async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      { new: true }
-    );
+    const updatedUser =
+      (await Google.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body,
+        },
+        { new: true }
+      )) ||
+      (await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: req.body,
+        },
+        { new: true }
+      ));
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json(error);
@@ -41,11 +51,17 @@ const getUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
   const { username } = req.query;
   try {
-    const users = await User.find();
+    const googleUsers = await Google.find();
+    const plebUsers = await User.find();
+    const users = [...googleUsers, ...plebUsers];
     if (username) {
-      const userInQuery = await User.find({
-        username: { $regex: username, $options: "i" },
-      });
+      const userInQuery =
+        (await Google.find({
+          username: { $regex: username, $options: "i" },
+        })) ||
+        (await User.find({
+          username: { $regex: username, $options: "i" },
+        }));
       if (userInQuery !== []) {
         return res.status(200).json(userInQuery);
       } else {
@@ -60,14 +76,13 @@ const getAllUsers = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
+    await Google.findByIdAndDelete(req.params.id);
     await User.findByIdAndDelete(req.params.id);
     res.status(200).send("USER DELETED");
   } catch (error) {
     res.status(500).send(error);
   }
 };
-
-
 
 module.exports = {
   createNewUser,

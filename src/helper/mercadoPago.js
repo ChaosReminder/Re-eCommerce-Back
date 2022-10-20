@@ -20,7 +20,9 @@ const mercadoPagoLink = async (products) => {
                 }
             }),
     
-            notification_url :'http://localhost:3000/notification'
+
+            notification_url : 'https://cell-store-api.onrender.com/notification'
+
           };
           
          const response = await mercadoPago.preferences.create(preference)

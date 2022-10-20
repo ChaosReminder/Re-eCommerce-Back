@@ -44,11 +44,9 @@ const getUserOrders = async (req, res) => {
       const itemsQuantity = ordersProducts
         .map((p) => p.qty)
         .reduce((a, b) => a + b, 0);
-      const ordersFinal = {
-        ...orders,
-        spent: itemsPrices,
-        quantityItems: itemsQuantity,
-      };
+      const ordersFinal = orders
+        .map((o) => o)
+        .concat({ spent: itemsPrices, quantityItems: itemsQuantity });
 
       return res.status(200).json(ordersFinal);
     } else {
