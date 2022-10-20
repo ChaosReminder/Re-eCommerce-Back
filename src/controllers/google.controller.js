@@ -2,6 +2,7 @@ const Google = require("../models/Google");
 const CryptoJS = require("crypto-js");
 const generateId = require("../helper/generateId");
 const User = require("../models/User");
+const generarJWT = require("../helper/generateJWT");
 
 const registerGoogle = async (req, res) => {
   const { username, email, image, confirmed, token } = req.body;
